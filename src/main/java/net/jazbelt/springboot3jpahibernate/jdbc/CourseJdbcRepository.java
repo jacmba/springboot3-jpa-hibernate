@@ -2,6 +2,7 @@ package net.jazbelt.springboot3jpahibernate.jdbc;
 
 import net.jazbelt.springboot3jpahibernate.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,11 @@ public class CourseJdbcRepository {
             where id = ?
             """;
 
+    private static final String SELECT_QUERY = """
+            select * from course
+            where id = ?
+            """;
+
     @Autowired
     public CourseJdbcRepository(JdbcTemplate template) {
         this.template = template;
@@ -29,7 +35,11 @@ public class CourseJdbcRepository {
         template.update(INSERT_QUERY, c.getId(), c.getName(), c.getAuthor());
     }
 
-    public void delete(long id) {
+    public void deleteById(long id) {
         template.update(DELETE_QUERY, id);
+    }
+
+    public Course findById(long id) {
+        return template.queryForObject(SELECT_QUERY, new BeanPropertyRowMapper<>(Course.class), id);
     }
 }

@@ -24,6 +24,9 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         repository.insert(new Course(3, "Learn AI", "John Doe"));
         repository.insert(new Course(4, "Learn AWS", "John Doe"));
 
-        repository.delete(1L);
+        repository.deleteById(1L);
+
+        Course result = repository.findById(2L);
+        System.out.println(result);
     }
 }

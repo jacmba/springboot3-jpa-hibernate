@@ -1,5 +1,6 @@
 package net.jazbelt.springboot3jpahibernate.jdbc;
 
+import net.jazbelt.springboot3jpahibernate.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,12 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Running!!");
-        repository.insert();
+
+        repository.insert(new Course(1, "Learn Spring", "John Doe"));
+        repository.insert(new Course(2, "Learn React", "John Doe"));
+        repository.insert(new Course(3, "Learn AI", "John Doe"));
+        repository.insert(new Course(4, "Learn AWS", "John Doe"));
+
+        repository.delete(1L);
     }
 }

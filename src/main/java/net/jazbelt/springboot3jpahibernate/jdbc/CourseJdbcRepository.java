@@ -1,5 +1,6 @@
 package net.jazbelt.springboot3jpahibernate.jdbc;
 
+import net.jazbelt.springboot3jpahibernate.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,9 +10,14 @@ public class CourseJdbcRepository {
 
     private final JdbcTemplate template;
 
-    private static final String INSERT_QUERY= """
+    private static final String INSERT_QUERY = """
             insert into course (id, name, author)
-            values (1, 'Learn stuff', 'John Doe');
+            values (?, ?, ?);
+            """;
+
+    private static final String DELETE_QUERY = """
+            delete from course
+            where id = ?
             """;
 
     @Autowired
@@ -19,7 +25,11 @@ public class CourseJdbcRepository {
         this.template = template;
     }
 
-    public void insert() {
-        template.update(INSERT_QUERY);
+    public void insert(Course c) {
+        template.update(INSERT_QUERY, c.getId(), c.getName(), c.getAuthor());
+    }
+
+    public void delete(long id) {
+        template.update(DELETE_QUERY, id);
     }
 }
